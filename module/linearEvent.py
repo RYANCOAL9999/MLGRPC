@@ -48,11 +48,18 @@ class LinearEvent(LinearService):
             context
         ) -> LinearRegressionReply:
 
+        if not isinstance(request, LinearRegressionRequest):
+            raise ValueError("Invalid request. Expected LinearRegressionRequest.")
+
         request = LinearRegressionRequest(request)
+
+        response = LinearRegressionReply()
+
+        if not self.manager.reversed(): return response
 
         dataSet = self.manager.getDataSet()
 
-        x, y = self.manager.gerateTrainData(
+        x, y = self.manager.generateTrainData(
             dataSet.drop(request.x_drop_data, axis=1), 
             dataSet[request.y_drop_data], 
             test_size=request.size, 
@@ -64,12 +71,16 @@ class LinearEvent(LinearService):
         
         # ols_m.summary()
 
-        return LinearFe(
-            x,
-            y,
-            request.sample_weight,
-            **request.kwargs
+        response = LinearRegressionReply(
+            LinearFe(
+                x,
+                y,
+                request.sample_weight,
+                **request.kwargs
+            )
         )
+
+        return response
     
     def LinearRidgeTrigger(
             self, 
@@ -77,7 +88,14 @@ class LinearEvent(LinearService):
             context
         ) -> LinearRidgeReply:
 
+        if not isinstance(request, LinearRegressionRequest):
+            raise ValueError("Invalid request. Expected LinearRegressionRequest.")
+
         request = LinearRegressionRequest(request)
+
+        response = LinearRidgeReply()
+
+        if not self.manager.reversed(): return response
 
         dataSet = self.manager.getDataSet()
 
@@ -89,13 +107,17 @@ class LinearEvent(LinearService):
             key = request.key
         )
 
-        return RidgeFe(
-            x,
-            y,
-            request.alpha,
-            request.sample_weight,
-            **request.kwargs
+        response = LinearRidgeReply(
+            RidgeFe(
+                x,
+                y,
+                request.alpha,
+                request.sample_weight,
+                **request.kwargs
+            )
         )
+
+        return response
     
     def LinearRidgeCVTrigger(
             self, 
@@ -103,7 +125,14 @@ class LinearEvent(LinearService):
             context
         ) -> LinearRidgeCVReply:
 
+        if not isinstance(request, LinearRidgeCVRequest):
+            raise ValueError("Invalid request. Expected LinearRidgeCVRequest.")
+
         request = LinearRidgeCVRequest(request)
+
+        response = LinearRidgeCVReply()
+
+        if not self.manager.reversed(): return response
 
         dataSet = self.manager.getDataSet()
 
@@ -115,13 +144,18 @@ class LinearEvent(LinearService):
             key = request.key
         )
 
-        return RidgeCVFe(
-            x,
-            y,
-            request.alpha,
-            request.sample_weight,
-            **request.kwargs
+        response = LinearRidgeCVReply(
+            RidgeCVFe(
+                x,
+                y,
+                request.alpha,
+                request.sample_weight,
+                **request.kwargs
+            )
         )
+
+        return response
+
     
     def LassoExpressionTrigger(
             self, 
@@ -129,7 +163,14 @@ class LinearEvent(LinearService):
             context 
         ) -> LassoExpressionReply:
 
+        if not isinstance(request, LassoExpressionRequest):
+            raise ValueError("Invalid request. Expected LassoExpressionRequest.")
+
         request = LassoExpressionRequest(request)
+
+        response = LassoExpressionReply()
+
+        if not self.manager.reversed(): return response
 
         dataSet = self.manager.getDataSet()
 
@@ -140,14 +181,18 @@ class LinearEvent(LinearService):
             random_state=request.random,
             key = request.key
         )
-        
-        return LassoFe(
-            x,
-            y,
-            request.alpha,
-            request.sample_weight,
-            **request.kwargs
+
+        response = LassoExpressionReply(
+            LassoFe(
+                x,
+                y,
+                request.alpha,
+                request.sample_weight,
+                **request.kwargs
+            )
         )
+        
+        return response
     
     def LassoLarsLassoExpressionTrigger(
             self, 
@@ -155,7 +200,14 @@ class LinearEvent(LinearService):
             context   
         ) -> LassoLarsLassoExpressionReply:
 
+        if not isinstance(request, LassoLarsLassoExpressionRequest):
+            raise ValueError("Invalid request. Expected LassoLarsLassoExpressionRequest.")
+
         request = LassoLarsLassoExpressionRequest(request)
+
+        response = LassoLarsLassoExpressionReply()
+
+        if not self.manager.reversed(): return response
 
         dataSet = self.manager.getDataSet()
 
@@ -167,13 +219,17 @@ class LinearEvent(LinearService):
             key = request.key
         )
 
-        return LassoLarsFe(
-            x,
-            y,
-            request.alpha,
-            request.sample_weight,
-            **request.kwargs
+        response = LassoLarsLassoExpressionReply(
+            LassoLarsFe(
+                x,
+                y,
+                request.alpha,
+                request.sample_weight,
+                **request.kwargs
+            )
         )
+
+        return response
 
     def BayesianRidgeTrigger(
             self, 
@@ -181,7 +237,14 @@ class LinearEvent(LinearService):
             context 
         ) -> BayesianRidgeReply:
 
+        if not isinstance(request, BayesianRidgeRequest):
+            raise ValueError("Invalid request. Expected BayesianRidgeRequest.")
+
         request = BayesianRidgeRequest(request)
+
+        response = BayesianRidgeReply()
+
+        if not self.manager.reversed(): return response
 
         dataSet = self.manager.getDataSet()
 
@@ -193,12 +256,16 @@ class LinearEvent(LinearService):
             key = request.key
         )
 
-        return BayesianRidgeFe(
-            x,
-            y,
-            request.sample_weight,
-            **request.kwargs
+        response = BayesianRidgeReply(
+            BayesianRidgeFe(
+                x,
+                y,
+                request.sample_weight,
+                **request.kwargs
+            )
         )
+
+        return response
 
     def TweedieRegressorTrigger(
             self, 
@@ -206,7 +273,14 @@ class LinearEvent(LinearService):
             context 
         ) -> TweedieRegressorReply:
 
+        if not isinstance(request, LassoLarsLassoExpressionRequest):
+            raise ValueError("Invalid request. Expected LassoLarsLassoExpressionRequest.")
+
         request = TweedieRegressorRequest(request)
+
+        response = TweedieRegressorReply()
+
+        if not self.manager.reversed(): return response
 
         dataSet = self.manager.getDataSet()
 
@@ -218,12 +292,16 @@ class LinearEvent(LinearService):
             key = request.key
         )
 
-        return TweedieRegressorFe(
-            x,
-            y,
-            request.sample_weight,
-            **request.kwargs
+        response = TweedieRegressorReply(
+            TweedieRegressorFe(
+                x,
+                y,
+                request.sample_weight,
+                **request.kwargs
+            )
         )
+
+        return response
 
     def SGDClassifierTrigger(
             self, 
@@ -231,7 +309,14 @@ class LinearEvent(LinearService):
             context 
         ) -> SGDClassifierReply:
 
+        if not isinstance(request, SGDClassifierRequest):
+            raise ValueError("Invalid request. Expected SGDClassifierRequest.")
+
         request = SGDClassifierRequest(request)
+
+        response = SGDClassifierReply()
+
+        if not self.manager.reversed(): return response
 
         dataSet = self.manager.getDataSet()
 
@@ -243,13 +328,17 @@ class LinearEvent(LinearService):
             key = request.key
         )
 
-        return SGDClassifierFe(
-            x,
-            y,
-            request.alpha,
-            request.sample_weight,
-            **request.kwargs
+        response = SGDClassifierReply(
+            SGDClassifierFe(
+                x,
+                y,
+                request.alpha,
+                request.sample_weight,
+                **request.kwargs
+            )
         )
+
+        return response
     
     def ElasticNetTrigger (
             self, 
@@ -257,12 +346,33 @@ class LinearEvent(LinearService):
             context 
         ) -> ElasticNetReply:
 
+        if not isinstance(request, ElasticNetRequest):
+            raise ValueError("Invalid request. Expected ElasticNetRequest.")
+
         request = ElasticNetRequest(request)
 
-        return ElasticNetFe(
-            None,
-            None,
-            request.alpha,
-            request.sample_weight,
-            **request.kwargs
+        response = ElasticNetReply()
+
+        if not self.manager.reversed(): return response
+
+        dataSet = self.manager.getDataSet()
+
+        x, y = self.manager.gerateTrainData(
+            dataSet.drop(request.x_drop_data, axis=1), 
+            dataSet[request.y_drop_data], 
+            test_size=request.size, 
+            random_state=request.random,
+            key = request.key
         )
+
+        response = ElasticNetReply(
+            ElasticNetFe(
+                x,
+                y,
+                request.alpha,
+                request.sample_weight,
+                **request.kwargs
+            )
+        )
+
+        return response

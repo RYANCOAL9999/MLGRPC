@@ -25,7 +25,14 @@ class PolynomialEvent(PolynomialService):
             context
         ) -> PolynomialFeaturesReply:
 
+        if not isinstance(request, PolynomialFeaturesRequest):
+            raise ValueError("Invalid request. Expected PolynomialFeaturesRequest.")
+
         request = PolynomialFeaturesRequest(request)
+
+        response = PolynomialFeaturesReply()
+
+        if not self.manager.reversed(): return response
 
         dataSet = self.manager.getDataSet()
 
@@ -37,15 +44,19 @@ class PolynomialEvent(PolynomialService):
             key = request.key
         )
 
-        return PolynomialFe(
-            x,
-            y if not y else None,
-            request.degree,
-            request.interaction_only,
-            request.include_bias,
-            request.order,
-            **request.kwargs
+        response = PolynomialFeaturesReply(
+            PolynomialFe(
+                x,
+                y if not y else None,
+                request.degree,
+                request.interaction_only,
+                request.include_bias,
+                request.order,
+                **request.kwargs
+            )
         )
+
+        return response
     
     def PolynomialFeaturesFitTransformTrigger(
             self, 
@@ -53,7 +64,14 @@ class PolynomialEvent(PolynomialService):
             context
         ) -> PolynomialFeaturesFitTransformReply:
 
+        if not isinstance(request, PolynomialFeaturesFitTransformRequest):
+            raise ValueError("Invalid request. Expected PolynomialFeaturesFitTransformRequest.")
+
         request = PolynomialFeaturesFitTransformRequest(request)
+
+        response = PolynomialFeaturesFitTransformReply()
+
+        if not self.manager.reversed(): return response
 
         dataSet = self.manager.getDataSet()
 
@@ -65,16 +83,19 @@ class PolynomialEvent(PolynomialService):
             key = request.key
         )
 
-        return PolynomialTransformFe(
-            x,
-            y if not y else None,
-            request.sample_weight,
-            request.degree,
-            request.interaction_only,
-            request.include_bias,
-            request.order,
-            request.coef_init,
-            request.intercept_init,
-            **request.kwargs
+        response = PolynomialFeaturesFitTransformReply(
+            PolynomialTransformFe(
+                x,
+                y if not y else None,
+                request.sample_weight,
+                request.degree,
+                request.interaction_only,
+                request.include_bias,
+                request.order,
+                request.coef_init,
+                request.intercept_init,
+                **request.kwargs
+            )
         )
 
+        return response

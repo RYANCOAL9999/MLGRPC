@@ -19,8 +19,8 @@ from controller.polynomialEventControl import control as polynomialControl
 class ServerManager(BaseManager):
 
     def __init__(self, file_path: str)-> None:
-        self.processes = []
-        self.df = pd.read_csv(file_path)
+        self.__processes = []
+        self.__df = pd.read_csv(file_path)
 
     #################################################################################################
     ########### need to think about how to pass the score to customer after fit finished#############
@@ -34,20 +34,20 @@ class ServerManager(BaseManager):
         control_functions = [lineControl, neighborsControl, polynomialControl, svmControl]
         with contextlib.ExitStack() as stack:
             for control_func in control_functions:
-                self.processes.append(
+                self.__processes.append(
                     Process(
                         target=control_func,
                         args=(server, self)
                     )
                 )
             stack.enter_context(process)
-            self.processes.append(process)
+            self.__processes.append(process)
 
         # Start all processes
-        for process in self.processes: process.start()
+        for process in self.__processes: process.start()
 
         # Wait for all processes to complete
-        for process in self.processes: process.join()
+        for process in self.__processes: process.join()
 
 
     def start(
@@ -72,14 +72,14 @@ class ServerManager(BaseManager):
 
     def shutdown(self) -> None:
         # terminate all processes
-        for process in self.processes:
+        for process in self.__processes:
             process.terminate()
         # delete all processes
-        self.processes = []
+        self.__processes = []
         return super().shutdown()
     
-    def getDataSet(self) -> pd.DataFrame:
-        return self.df
+    def getDataSet(self) -> (pd.DataFrame or None):
+        return self.__df if self.__df is not None else None
     
     def generateTrainData(
             self,
@@ -110,13 +110,13 @@ class ServerManager(BaseManager):
         return preditionData
     
     def showhead(self)->pd.DataFrame:
-        return self.df.head()
+        return self.__df.head()
     
     def showInfo(self)->None:
-        return self.df.info()
+        return self.__df.info()
     
     def showDescrible(self)->pd.DataFrame:
-        return self.df.describe()
+        return self.__df.describe()
     
     def showMeanAbsoluteError(self, test, pred)->( float or np.ndarray ):
         return mean_absolute_error(test, pred)
@@ -135,13 +135,13 @@ class ServerManager(BaseManager):
         
     def showSns(self, trainArray)->None:
         sns.pairplot(
-            self.df[trainArray]
+            self.__df[trainArray]
         )
         plt.show()
 
     def showFigure(self, key, dict)->None:
 
-        dataSetCopy = self.df.copy()
+        dataSetCopy = self.__df.copy()
         dataSetCopy.isna().sum()
         dataSetCopy['year'] = dataSetCopy['date'].str.slice(0, 4) 
         dataSetCopy['month'] = dataSetCopy['date'].str.slice(4, 6) 
@@ -171,7 +171,7 @@ class ServerManager(BaseManager):
 
         wcss = []
 
-        x = self.df.iloc[:, trainArray].values
+        x = self.__df.iloc[:, trainArray].values
 
         y_Kmeans = None
 
