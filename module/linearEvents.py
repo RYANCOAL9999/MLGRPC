@@ -59,25 +59,48 @@ class LinearEvents(LinearService):
 
         dataSet = self.manager.getDataSet()
 
-        x, y = self.manager.generateTrainData(
+        x_train, y_train, x_test, y_test = self.manager.generateTrainData(
             dataSet.drop(request.x_drop_data, axis=1), 
             dataSet[request.y_drop_data], 
             test_size=request.size, 
-            random_state=request.random,
-            key = request.key
+            random_state=request.random
+        )
+
+        x, y = self.manager.chooseDictData(
+            request.key, 
+            x_train, 
+            y_train, 
+            x_test, 
+            y_test
         )
 
         # ols_m = sm.OLS(y, sm.add_constant(x)).fit()
         
         # ols_m.summary()
 
+        model = LinearFe(
+            x,
+            y,
+            request.sample_weight,
+            **request.kwargs
+        )
+
+        score = self.manager.showScore(x, y, model)
+
+        y_predict = self.manager.showPredict(model, x_test)
+
+        meanAbsoluteError = self.manager.showMeanAbsoluteError(y_test, y_predict)
+
         response = LinearRegressionReply(
-            LinearFe(
-                x,
-                y,
-                request.sample_weight,
-                **request.kwargs
-            )
+            feature_names_in_ = model.feature_names_in_,
+            n_features_in_ = model.n_features_in_,
+            intercept_ = model.intercept_,
+            singular_ = model.singular_,
+            rank_ = model.rank_,
+            coef_ = model.coef_,
+            score = score,
+            predict = y_predict,
+            meanAbsoluteError = meanAbsoluteError
         )
 
         return response
@@ -99,22 +122,35 @@ class LinearEvents(LinearService):
 
         dataSet = self.manager.getDataSet()
 
-        x, y = self.manager.gerateTrainData(
+        x_train, y_train, x_test, y_test = self.manager.generateTrainData(
             dataSet.drop(request.x_drop_data, axis=1), 
             dataSet[request.y_drop_data], 
             test_size=request.size, 
-            random_state=request.random,
-            key = request.key
+            random_state=request.random
+        )
+
+        x, y = self.manager.chooseDictData(
+            request.key, 
+            x_train, 
+            y_train, 
+            x_test, 
+            y_test
+        )
+
+        model = RidgeFe(
+            x,
+            y,
+            request.alpha,
+            request.sample_weight,
+            **request.kwargs
         )
 
         response = LinearRidgeReply(
-            RidgeFe(
-                x,
-                y,
-                request.alpha,
-                request.sample_weight,
-                **request.kwargs
-            )
+            feature_names_in_ = model.feature_names_in_,
+            n_features_in_ = model.n_features_in_,
+            n_iter = model.n_iter_,
+            intercept_ = model.intercept_,
+            coef_ = model.coef_
         )
 
         return response
@@ -136,22 +172,37 @@ class LinearEvents(LinearService):
 
         dataSet = self.manager.getDataSet()
 
-        x, y = self.manager.gerateTrainData(
+        x_train, y_train, x_test, y_test = self.manager.generateTrainData(
             dataSet.drop(request.x_drop_data, axis=1), 
             dataSet[request.y_drop_data], 
             test_size=request.size, 
-            random_state=request.random,
-            key = request.key
+            random_state=request.random
+        )
+
+        x, y = self.manager.chooseDictData(
+            request.key, 
+            x_train, 
+            y_train, 
+            x_test, 
+            y_test
+        )
+
+        model = RidgeCVFe(
+            x,
+            y,
+            request.alpha,
+            request.sample_weight,
+            **request.kwargs
         )
 
         response = LinearRidgeCVReply(
-            RidgeCVFe(
-                x,
-                y,
-                request.alpha,
-                request.sample_weight,
-                **request.kwargs
-            )
+            feature_names_in_ = model.feature_names_in_,
+            n_features_in_ = model.n_features_in_,
+            best_score_ = model.best_score_,
+            alpha = model.alpha,
+            intercept_ = model.intercept_,
+            coef_ = model.coef_,
+            cv_values_ = model.cv_values_,
         )
 
         return response
@@ -174,22 +225,37 @@ class LinearEvents(LinearService):
 
         dataSet = self.manager.getDataSet()
 
-        x, y = self.manager.gerateTrainData(
+        x_train, y_train, x_test, y_test = self.manager.generateTrainData(
             dataSet.drop(request.x_drop_data, axis=1), 
             dataSet[request.y_drop_data], 
             test_size=request.size, 
-            random_state=request.random,
-            key = request.key
+            random_state=request.random
+        )
+
+        x, y = self.manager.chooseDictData(
+            request.key, 
+            x_train, 
+            y_train, 
+            x_test, 
+            y_test
+        )
+
+        model = LassoFe(
+            x,
+            y,
+            request.alpha,
+            request.sample_weight,
+            **request.kwargs
         )
 
         response = LassoExpressionReply(
-            LassoFe(
-                x,
-                y,
-                request.alpha,
-                request.sample_weight,
-                **request.kwargs
-            )
+            feature_names_in_ = model.feature_names_in_,
+            n_features_in_ = model.n_features_in_,
+            n_iter_ = model.n_iter_,
+            intercept_ = model.intercept_,
+            sparse_coef_ = model.sparse_coef_,
+            dual_gap_ = model.dual_gap_,
+            coef_ = model.coef_,
         )
         
         return response
@@ -211,22 +277,37 @@ class LinearEvents(LinearService):
 
         dataSet = self.manager.getDataSet()
 
-        x, y = self.manager.gerateTrainData(
+        x_train, y_train, x_test, y_test = self.manager.generateTrainData(
             dataSet.drop(request.x_drop_data, axis=1), 
             dataSet[request.y_drop_data], 
             test_size=request.size, 
-            random_state=request.random,
-            key = request.key
+            random_state=request.random
+        )
+
+        x, y = self.manager.chooseDictData(
+            request.key, 
+            x_train, 
+            y_train, 
+            x_test, 
+            y_test
+        )
+
+        model = LassoLarsFe(
+            x,
+            y,
+            request.alpha,
+            request.sample_weight,
+            **request.kwargs
         )
 
         response = LassoLarsLassoExpressionReply(
-            LassoLarsFe(
-                x,
-                y,
-                request.alpha,
-                request.sample_weight,
-                **request.kwargs
-            )
+            feature_names_in_ = model.feature_names_in_,
+            n_features_in_ = model.n_features_in_,
+            n_iter_ = model.n_iter_,
+            coef_ = model.coef_,
+            coef_path_ = model.coef_path_,
+            active_ = model.active_,
+            alphas_ = model.alphas_
         )
 
         return response
@@ -248,21 +329,39 @@ class LinearEvents(LinearService):
 
         dataSet = self.manager.getDataSet()
 
-        x, y = self.manager.gerateTrainData(
+        x_train, y_train, x_test, y_test = self.manager.generateTrainData(
             dataSet.drop(request.x_drop_data, axis=1), 
             dataSet[request.y_drop_data], 
             test_size=request.size, 
-            random_state=request.random,
-            key = request.key
+            random_state=request.random
+        )
+
+        x, y = self.manager.chooseDictData(
+            request.key, 
+            x_train, 
+            y_train, 
+            x_test, 
+            y_test
+        )
+        model = BayesianRidgeFe(
+            x,
+            y,
+            request.sample_weight,
+            **request.kwargs
         )
 
         response = BayesianRidgeReply(
-            BayesianRidgeFe(
-                x,
-                y,
-                request.sample_weight,
-                **request.kwargs
-            )
+            feature_names_in_ = model.feature_names_in_,
+            n_features_in_ = model.n_features_in_,
+            x_scale_ = model.X_scale_,
+            x_offset_ = model.X_offset_,
+            n_iter_ = model.n_iter_,
+            score_ = model.scores_,
+            simga_ = model.sigma_,
+            lambda_ = model.lambda_,
+            alpha_ = model.alpha_,
+            intercept_ = model.intercept_,
+            coef = model.coef_,
         )
 
         return response
@@ -284,21 +383,34 @@ class LinearEvents(LinearService):
 
         dataSet = self.manager.getDataSet()
 
-        x, y = self.manager.gerateTrainData(
+        x_train, y_train, x_test, y_test = self.manager.generateTrainData(
             dataSet.drop(request.x_drop_data, axis=1), 
             dataSet[request.y_drop_data], 
             test_size=request.size, 
-            random_state=request.random,
-            key = request.key
+            random_state=request.random
         )
 
+        x, y = self.manager.chooseDictData(
+            request.key, 
+            x_train, 
+            y_train, 
+            x_test, 
+            y_test
+        )
+
+        model = TweedieRegressorFe(
+            x,
+            y,
+            request.sample_weight,
+            **request.kwargs
+        )
+        
         response = TweedieRegressorReply(
-            TweedieRegressorFe(
-                x,
-                y,
-                request.sample_weight,
-                **request.kwargs
-            )
+            feature_names_in_ = model.feature_names_in_,
+            n_features_in_ = model.n_features_in_,
+            n_iter_ = model.n_iter_,
+            intercept_ = model.intercept_,
+            coef_ = model.coef_
         )
 
         return response
@@ -320,22 +432,36 @@ class LinearEvents(LinearService):
 
         dataSet = self.manager.getDataSet()
 
-        x, y = self.manager.gerateTrainData(
+        x_train, y_train, x_test, y_test = self.manager.generateTrainData(
             dataSet.drop(request.x_drop_data, axis=1), 
             dataSet[request.y_drop_data], 
             test_size=request.size, 
-            random_state=request.random,
-            key = request.key
+            random_state=request.random
+        )
+
+        x, y = self.manager.chooseDictData(
+            request.key, 
+            x_train, 
+            y_train, 
+            x_test, 
+            y_test
+        )
+
+        model = SGDClassifierFe(
+            x,
+            y,
+            request.sample_weight,
+            **request.kwargs
         )
 
         response = SGDClassifierReply(
-            SGDClassifierFe(
-                x,
-                y,
-                request.alpha,
-                request.sample_weight,
-                **request.kwargs
-            )
+            feature_names_in_ = model.feature_names_in_,
+            n_features_in_ = model.n_features_in_,
+            t_ = model.t_,
+            classes_ = model.classes_,
+            loss_function_ = model.loss_function_,
+            intercept_ = model.intercept_,
+            coef_ = model.coef_
         )
 
         return response
@@ -357,22 +483,36 @@ class LinearEvents(LinearService):
 
         dataSet = self.manager.getDataSet()
 
-        x, y = self.manager.gerateTrainData(
+        x_train, y_train, x_test, y_test = self.manager.generateTrainData(
             dataSet.drop(request.x_drop_data, axis=1), 
             dataSet[request.y_drop_data], 
             test_size=request.size, 
-            random_state=request.random,
-            key = request.key
+            random_state=request.random
+        )
+
+        x, y = self.manager.chooseDictData(
+            request.key, 
+            x_train, 
+            y_train, 
+            x_test, 
+            y_test
+        )
+
+        model = ElasticNetFe(
+            x,
+            y,
+            request.alpha,
+            request.sample_weight,
+            **request.kwargs
         )
 
         response = ElasticNetReply(
-            ElasticNetFe(
-                x,
-                y,
-                request.alpha,
-                request.sample_weight,
-                **request.kwargs
-            )
+            feature_names_in_ = model.feature_names_in_,
+            n_features_in_ = model.n_features_in_,
+            dual_gap_ = model.dual_gap_,
+            n_iter_ = model.n_iter_,
+            intercept_ = model.intercept_,
+            coef_ = model.coef_
         )
 
         return response

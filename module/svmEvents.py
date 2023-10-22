@@ -40,20 +40,34 @@ class SVMEvents(SVMService):
 
         dataSet = self.manager.getDataSet()
 
-        x, y = self.manager.gerateTrainData(
+        x_train, y_train, x_test, y_test = self.manager.generateTrainData(
             dataSet.drop(request.x_drop_data, axis=1), 
             dataSet[request.y_drop_data], 
             test_size=request.size, 
-            random_state=request.random,
-            key = request.key
+            random_state=request.random
+        )
+
+        x, y = self.manager.chooseDictData(
+            request.key, 
+            x_train, 
+            y_train, 
+            x_test, 
+            y_test
+        )
+
+        model = LinearSVCFe(
+            x,
+            y,
+            **request.kwargs
         )
 
         response = LinearSVCReply(
-            LinearSVCFe(
-                x,
-                y,
-                **request.kwargs
-            )
+            n_iter_ = model.n_iter_,
+            feature_names_in_ = model.feature_names_in_,
+            n_features_in_ = model.n_features_in_,
+            classes_ = model.classes_,
+            intercept_ = model.intercept_,
+            coef_ = model.coef_
         )
 
         return response
@@ -75,20 +89,33 @@ class SVMEvents(SVMService):
 
         dataSet = self.manager.getDataSet()
 
-        x, y = self.manager.gerateTrainData(
+        x_train, y_train, x_test, y_test = self.manager.generateTrainData(
             dataSet.drop(request.x_drop_data, axis=1), 
             dataSet[request.y_drop_data], 
             test_size=request.size, 
-            random_state=request.random,
-            key = request.key
+            random_state=request.random
+        )
+
+        x, y = self.manager.chooseDictData(
+            request.key, 
+            x_train, 
+            y_train, 
+            x_test, 
+            y_test
+        )
+
+        model = LinearSVRFe(
+            x,
+            y,
+            **request.kwargs
         )
 
         response = LinearSVRReply(
-            LinearSVRFe(
-                x,
-                y,
-                **request.kwargs
-            )
+            n_iter_ = model.n_iter_,
+            feature_names_in_ = model.feature_names_in_,
+            n_features_in_ = model.n_features_in_,
+            intercept_ = model.intercept_,
+            coef_ = model.coef_
         )
 
         return response
@@ -110,20 +137,43 @@ class SVMEvents(SVMService):
 
         dataSet = self.manager.getDataSet()
 
-        x, y = self.manager.gerateTrainData(
+        x_train, y_train, x_test, y_test = self.manager.generateTrainData(
             dataSet.drop(request.x_drop_data, axis=1), 
             dataSet[request.y_drop_data], 
             test_size=request.size, 
-            random_state=request.random,
-            key = request.key
+            random_state=request.random
         )
 
+        x, y = self.manager.chooseDictData(
+            request.key, 
+            x_train, 
+            y_train, 
+            x_test, 
+            y_test
+        )
+
+        model = SVCFe(
+            x,
+            y,
+            **request.kwargs
+        )   
+
         response = SVCReply(
-            SVCFe(
-                x,
-                y,
-                **request.kwargs
-            )   
+            shape_fit_ = model.shape_fit_,
+            probB_ = model.probB_,
+            probA_ = model.probA_,
+            n_support_ = model.n_support_,
+            support_vectors_ = model.support_vectors_,
+            support_ = model.support_,
+            n_iter_ = model.n_iter_,
+            feature_names_in_ = model.feature_names_in_,
+            n_features_in_ = model.n_features_in_,
+            intercept_ = model.intercept_,
+            fit_status_ = model.fit_status_,
+            dual_coef_ = model.dual_coef_,
+            coef_ = model.coef_,
+            classes_ = model.classes_,
+            class_weight_ = model.class_weight_
         )
 
         return response

@@ -36,24 +36,27 @@ class PolynomialEvents(PolynomialService):
 
         dataSet = self.manager.getDataSet()
 
-        x, y = self.manager.gerateTrainData(
+        x_train, y_train, x_test, y_test = self.manager.generateTrainData(
             dataSet.drop(request.x_drop_data, axis=1), 
             dataSet[request.y_drop_data], 
             test_size=request.size, 
-            random_state=request.random,
-            key = request.key
+            random_state=request.random
+        )
+
+        x, y = self.manager.chooseDictData(request.key, x_train, y_train, x_test, y_test)
+
+        model = PolynomialFe(
+            x,
+            y if not y else None,
+            request.degree,
+            request.interaction_only,
+            request.include_bias,
+            request.order,
+            **request.kwargs
         )
 
         response = PolynomialFeaturesReply(
-            PolynomialFe(
-                x,
-                y if not y else None,
-                request.degree,
-                request.interaction_only,
-                request.include_bias,
-                request.order,
-                **request.kwargs
-            )
+            matrix = model
         )
 
         return response
@@ -75,27 +78,37 @@ class PolynomialEvents(PolynomialService):
 
         dataSet = self.manager.getDataSet()
 
-        x, y = self.manager.gerateTrainData(
+        x_train, y_train, x_test, y_test = self.manager.generateTrainData(
             dataSet.drop(request.x_drop_data, axis=1), 
             dataSet[request.y_drop_data], 
             test_size=request.size, 
-            random_state=request.random,
-            key = request.key
+            random_state=request.random
+        )
+
+        x, y = self.manager.chooseDictData(request.key, x_train, y_train, x_test, y_test)
+
+        model = PolynomialTransformFe(
+            x,
+            y if not y else None,
+            request.sample_weight,
+            request.degree,
+            request.interaction_only,
+            request.include_bias,
+            request.order,
+            request.coef_init,
+            request.intercept_init,
+            **request.kwargs
         )
 
         response = PolynomialFeaturesFitTransformReply(
-            PolynomialTransformFe(
-                x,
-                y if not y else None,
-                request.sample_weight,
-                request.degree,
-                request.interaction_only,
-                request.include_bias,
-                request.order,
-                request.coef_init,
-                request.intercept_init,
-                **request.kwargs
-            )
+            t_ = model.t_,
+            n_iter_ = model.n_iter_,
+            feature_names_in_ = model.feature_names_in_,
+            n_features_in_ = model.n_features_in_,
+            loss_function_ = model.loss_function_,
+            intercept_ = model.intercept_,
+            coef_ = model.coef_,
+            classes_ = model.classes_
         )
 
         return response

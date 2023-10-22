@@ -41,20 +41,33 @@ class NeighborsEvents(NeighborsService):
 
         dataSet = self.manager.getDataSet()
 
-        x, y = self.manager.gerateTrainData(
+        x_train, y_train, x_test, y_test = self.manager.generateTrainData(
             dataSet.drop(request.x_drop_data, axis=1), 
             dataSet[request.y_drop_data], 
             test_size=request.size, 
-            random_state=request.random,
-            key = request.key
+            random_state=request.random
+        )
+
+        x, y = self.manager.chooseDictData(
+            request.key, 
+            x_train, 
+            y_train, 
+            x_test, 
+            y_test
+        )
+
+        model = NearestNeighborsFe(
+            x,
+            y if not y else None,
+            **request.kwargs
         )
 
         response = NearestNeighborsReply(
-            NearestNeighborsFe(
-                x,
-                y if not y else None,
-                **request.kwargs
-            )
+            n_samples_fit_ = model.n_samples_fit_,
+	        feature_names_in_ = model.feature_names_in_,
+	        n_features_in_ = model.n_features_in_,
+	        effective_metric_params_ = model.effective_metric_params_,
+	        effective_metric_ = model.effective_metric_
         )
 
         return response
@@ -76,27 +89,36 @@ class NeighborsEvents(NeighborsService):
 
         dataSet = self.manager.getDataSet()
 
-        x, y = self.manager.gerateTrainData(
+        x_train, y_train, x_test, y_test = self.manager.generateTrainData(
             dataSet.drop(request.x_drop_data, axis=1), 
             dataSet[request.y_drop_data], 
             test_size=request.size, 
-            random_state=request.random,
-            key = request.key
+            random_state=request.random
+        )
+
+        x, y = self.manager.chooseDictData(
+            request.key, 
+            x_train, 
+            y_train, 
+            x_test, 
+            y_test
+        )
+
+        model = KDTreeFe(
+            x,
+            request.k,
+            request.leaf_size,
+            request.metric,
+            request.sample_weight,
+            request.return_distance,
+            request.dualtree,
+            request.breadth_first,
+            request.sort_results,   
+            **request.kwargs
         )
 
         response = KDTreeReply(
-            KDTreeFe(
-                x,
-                request.k,
-                request.leaf_size,
-                request.metric,
-                request.sample_weight,
-                request.return_distance,
-                request.dualtree,
-                request.breadth_first,
-                request.sort_results,   
-                **request.kwargs
-            )
+            matrix = model
         )
 
         return response
@@ -118,21 +140,33 @@ class NeighborsEvents(NeighborsService):
 
         dataSet = self.manager.getDataSet()
 
-        x, y = self.manager.gerateTrainData(
+        x_train, y_train, x_test, y_test = self.manager.generateTrainData(
             dataSet.drop(request.x_drop_data, axis=1), 
             dataSet[request.y_drop_data], 
             test_size=request.size, 
-            random_state=request.random,
-            key = request.key
+            random_state=request.random
+        )
+
+        x, y = self.manager.chooseDictData(
+            request.key, 
+            x_train, 
+            y_train, 
+            x_test, 
+            y_test
+        )
+
+        model = NearestCentroidFe(
+            x,
+            y,
+            request.metric,
+            request.shrink_threshold
         )
 
         response = NearestCentroidReply(
-                NearestCentroidFe(
-                x,
-                y,
-                request.metric,
-                request.shrink_threshold
-            )
+	        feature_names_in_ = model.feature_names_in_,
+	        n_features_in_ = model.n_features_in_,
+	        classes_ = model.classes_,
+	        centroids_ = model.centroids_
         )
 
         return response
