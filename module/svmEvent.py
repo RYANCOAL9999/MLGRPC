@@ -29,7 +29,14 @@ class SVMEvents(SVMService):
             context
         ) -> LinearSVCReply:
 
+        if not isinstance(request, LinearSVCRequest):
+            raise ValueError("Invalid request. Expected LinearSVCRequest.")
+
         request = LinearSVCRequest(request)
+
+        response = LinearSVCReply()
+
+        if not self.manager.reversed(): return response
 
         dataSet = self.manager.getDataSet()
 
@@ -41,11 +48,15 @@ class SVMEvents(SVMService):
             key = request.key
         )
 
-        return LinearSVCFe(
-            x,
-            y,
-            **request.kwargs
+        response = LinearSVCReply(
+            LinearSVCFe(
+                x,
+                y,
+                **request.kwargs
+            )
         )
+
+        return response
     
     def LinearSVRTrigger(
             self, 
@@ -53,7 +64,14 @@ class SVMEvents(SVMService):
             context
         ) -> LinearSVRReply:
 
+        if not isinstance(request, LinearSVRRequest):
+            raise ValueError("Invalid request. Expected LinearSVRRequest.")
+
         request = LinearSVRRequest(request)
+
+        response = LinearSVRReply()
+
+        if not self.manager.reversed(): return response
 
         dataSet = self.manager.getDataSet()
 
@@ -65,11 +83,15 @@ class SVMEvents(SVMService):
             key = request.key
         )
 
-        return LinearSVRFe(
-            x,
-            y,
-            **request.kwargs
+        response = LinearSVRReply(
+            LinearSVRFe(
+                x,
+                y,
+                **request.kwargs
+            )
         )
+
+        return response
     
     def SVCTrigger(
             self, 
@@ -77,7 +99,14 @@ class SVMEvents(SVMService):
             context
         ) -> SVCReply:
 
+        if not isinstance(request, SVCRequest):
+            raise ValueError("Invalid request. Expected SVCRequest.")
+
         request = SVCRequest(request)
+
+        response = SVCReply()
+
+        if not self.manager.reversed(): return response
 
         dataSet = self.manager.getDataSet()
 
@@ -89,11 +118,15 @@ class SVMEvents(SVMService):
             key = request.key
         )
 
-        return SVCFe(
-            x,
-            y,
-            **request.kwargs
+        response = SVCReply(
+            SVCFe(
+                x,
+                y,
+                **request.kwargs
+            )   
         )
+
+        return response
     
     
 

@@ -30,7 +30,14 @@ class NeighborsEvents(NeighborsService):
             context
         ) -> NearestNeighborsReply:
 
+        if not isinstance(request, NearestNeighborsRequest):
+            raise ValueError("Invalid request. Expected NearestNeighborsRequest.")
+
         request = NearestNeighborsRequest(request)
+
+        response = NearestNeighborsReply()
+
+        if not self.manager.reversed(): return response
 
         dataSet = self.manager.getDataSet()
 
@@ -42,11 +49,15 @@ class NeighborsEvents(NeighborsService):
             key = request.key
         )
 
-        return NearestNeighborsFe(
-            x,
-            y if not y else None,
-            **request.kwargs
+        response = NearestNeighborsReply(
+            NearestNeighborsFe(
+                x,
+                y if not y else None,
+                **request.kwargs
+            )
         )
+
+        return response
     
     def KDTreeTrigger(
             self,
@@ -54,7 +65,14 @@ class NeighborsEvents(NeighborsService):
             context
         ) -> KDTreeReply:
 
+        if not isinstance(request, KDTreeRequest):
+            raise ValueError("Invalid request. Expected KDTreeRequest.")
+
         request = KDTreeRequest(request)
+
+        response = KDTreeReply()
+
+        if not self.manager.reversed(): return response
 
         dataSet = self.manager.getDataSet()
 
@@ -66,18 +84,22 @@ class NeighborsEvents(NeighborsService):
             key = request.key
         )
 
-        return KDTreeFe(
-            x,
-            request.k,
-            request.leaf_size,
-            request.metric,
-            request.sample_weight,
-            request.return_distance,
-            request.dualtree,
-            request.breadth_first,
-            request.sort_results,   
-            **request.kwargs
+        response = KDTreeReply(
+            KDTreeFe(
+                x,
+                request.k,
+                request.leaf_size,
+                request.metric,
+                request.sample_weight,
+                request.return_distance,
+                request.dualtree,
+                request.breadth_first,
+                request.sort_results,   
+                **request.kwargs
+            )
         )
+
+        return response
     
     def NearestCentroidTrigger(
             self,
@@ -85,7 +107,14 @@ class NeighborsEvents(NeighborsService):
             context  
         ) -> NearestCentroidReply:
 
+        if not isinstance(request, NearestCentroidRequest):
+            raise ValueError("Invalid request. Expected NearestCentroidRequest.")
+
         request = NearestCentroidRequest(request)
+
+        response = NearestCentroidReply()
+
+        if not self.manager.reversed(): return response
 
         dataSet = self.manager.getDataSet()
 
@@ -97,12 +126,16 @@ class NeighborsEvents(NeighborsService):
             key = request.key
         )
 
-        return NearestCentroidFe(
-            x,
-            y,
-            request.metric,
-            request.shrink_threshold
+        response = NearestCentroidReply(
+                NearestCentroidFe(
+                x,
+                y,
+                request.metric,
+                request.shrink_threshold
+            )
         )
+
+        return response
 
 
 
