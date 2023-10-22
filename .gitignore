@@ -14,8 +14,8 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
+lib/proto/py/
+lib/proto/pyi/
 parts/
 sdist/
 var/
