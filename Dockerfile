@@ -20,4 +20,4 @@ ENV PORT=50051
 ENV GRPCKEY = MULTI
 
 # Run your Python script
-CMD [ "python", "main.py" ]
+ENTRYPOINT [ "python", "main.py" ]
