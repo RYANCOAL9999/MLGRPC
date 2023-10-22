@@ -11,7 +11,7 @@ from lib.proto.py.polynomial_features_pb2 import (
     PolynomialFeaturesFitTransformRequest
 )
 
-class PolynomialEvent(PolynomialService):
+class PolynomialEvents(PolynomialService):
 
     def __init__(
             self, 
