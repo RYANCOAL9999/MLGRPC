@@ -1,0 +1,14 @@
+seaborn==0.13.0
+statsmodels== 0.14.0
+grpcio==1.59.0
+boto3==1.28.67
+sklearn==0.20
+pandas==1.4.3
+numpy==1.24.2
+zipp==3.4.1
+matplotlib==3.8.0
+plotly==5.17.0
+coverage>=4.0
+cython>=0.29.8,<3.0.0rc1
+protobuf>=4.21.3,<5.0dev
+wheel>=0.29

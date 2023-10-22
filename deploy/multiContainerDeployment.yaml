@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpc-service
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: grpc-service
+  template:
+    metadata:
+      labels:
+        app: grpc-service
+    spec:
+      containers:
+      - name: grpc-service-1
+        image: GRPC-app:latest
+        ports:
+        - containerPort: 50051
+        env:
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: grpc-service-port-config
+              key: PORT-1
+        - name: GRPCKEY
+          valueFrom:
+            configMapKeyRef:
+              name: grpc-service-GRPCKEY-config
+              key: GRPCKEY-1
+      - name: grpc-service-2
+        image: GRPC-app:latest
+        ports:
+        - containerPort: 50052
+        env:
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: grpc-service-port-config
+              key: PORT-2
+        - name: GRPCKEY
+          valueFrom:
+            configMapKeyRef:
+              name: grpc-service-GRPCKEY-config
+              key: GRPCKEY-2
+      - name: grpc-service-3
+        image: GRPC-app:latest
+        ports:
+        - containerPort: 50053
+        env:
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: grpc-service-port-config
+              key: PORT-3
+        - name: GRPCKEY
+          valueFrom:
+            configMapKeyRef:
+              name: grpc-service-GRPCKEY-config
+              key: GRPCKEY-3
+      - name: grpc-service-4
+        image: GRPC-app:latest
+        ports:
+        - containerPort: 50054
+        env:
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: grpc-service-port-config
+              key: PORT-4
+        - name: GRPCKEY
+          valueFrom:
+            configMapKeyRef:
+              name: grpc-service-GRPCKEY-config
+              key: GRPCKEY-4

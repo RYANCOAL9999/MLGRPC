@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpc-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grpc-service
+  template:
+    metadata:
+      labels:
+        app: grpc-service
+    spec:
+      containers:
+      - name: grpc-service-1
+        image: GRPC-app:latest
+        ports:
+        - containerPort: 50051 # replace the port for gRPC service is listening on
+        env:
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: grpc-service-port-config
+              key: PORT-1 # Replace with the key that corresponds to each replica
+        - name: GRPCKEY
+          valueFrom:
+            configMapKeyRef:
+              name: grpc-service-GRPCKEY-config
+              key: GRPCKEY-1 # Replace with the key that corresponds to each replica
