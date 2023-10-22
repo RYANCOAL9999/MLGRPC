@@ -10,9 +10,9 @@ from multiprocessing import Process
 from sklearn.metrics import mean_absolute_error
 from multiprocessing.managers import BaseManager
 from sklearn.model_selection import train_test_split
-from controller.generalEventControl import control as generalControl
 from controller.svmEventsControl import control as svmControl
 from controller.lineEventsControl import control as lineControl
+from controller.generalEventControl import control as generalControl
 from controller.neighborsEventsControl import control as neighborsControl
 from controller.polynomialEventsControl import control as polynomialControl
 
