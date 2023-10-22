@@ -19,7 +19,7 @@ async def serve() -> None:
     Serves the gRPC server.
     """
 
-    server_manager = ServerManager('dataSet/kc_house_data.csv')
+    server_manager = ServerManager()
 
     gRPCKey = str(os.environ['GRPCKEY'])
 

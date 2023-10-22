@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 
 from sklearn.cluster import KMeans
 from multiprocessing import Process
+from lib.readfile import get_pd_async
 from sklearn.metrics import mean_absolute_error
 from multiprocessing.managers import BaseManager
 from lib.feature.LinearExpression import LinearFe
@@ -18,6 +19,20 @@ from controller.polynomialEventControl import control as polynomialControl
 
 class ServerManager(BaseManager):
 
+    def __init__(self)-> None:
+        self.__processes = []
+        self.__df = None
+
+    def reversed(self)->bool:
+        return self.__df is None
+    
+    async def accessDF(self, url)-> bool:
+        correct = True
+        self.__df = await get_pd_async(url)
+        if self.reversed():
+            correct = False
+        return correct
+    
     def __init__(self, file_path: str)-> None:
         self.__processes = []
         self.__df = pd.read_csv(file_path)
