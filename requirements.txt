@@ -3,7 +3,7 @@ statsmodels== 0.14.0
 grpcio==1.59.0
 grpcio-tools==1.59.0
 boto3==1.28.67
-sklearn==0.20
+sklearn==0.0.post10
 pandas==1.4.3
 numpy==1.24.2
 zipp==3.4.1

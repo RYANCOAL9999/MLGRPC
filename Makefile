@@ -3,9 +3,9 @@ help:
 	@echo "Usage:"
 	@echo "		virtualenv       Set up virtual environment"
 	@echo "		activate         Activate virtual environment"
-	@echo "		source           Source the environment variable"
-	@echo "		install          Install the requirements.txt"
-	@echo "		protoc           Generate the protoc file for GPRC Protocol"
+	@echo "		source           Source environment variable"
+	@echo "		install          Install requirements.txt"
+	@echo "		protoc           Generate protoc file for GPRC Protocol"
 	@echo "		operate          Operate on local"
 	@echo "		build            Build Docker image"
 	@echo "		run              Run Docker image"
@@ -16,6 +16,7 @@ IMAGE_NAME = ML-grpc-service
 IMAGE_TAG = latest
 PROTOC_INPUT = ./lib/proto
 PROTOCOL_OUT_PY = ./lib/proto/py
+PROTOCOL_OUT_PYI = ./lib/proto/pyi
 GENERATE_FILE = ./lib/proto/linear_expression.proto ./lib/proto/nearest_neighbors.proto ./lib/proto/polynomial_features.proto ./lib/proto/svm_expression.proto
 
 
@@ -37,7 +38,7 @@ install:
 
 .PHONY: protoc
 protoc:
-	python -m grpc_tools.protoc -I ${PROTOC_INPUT} --python_out=${PROTOCOL_OUT_PY} --grpc_python_out=${PROTOCOL_OUT_PY} ${GENERATE_FILE}
+	python -m grpc_tools.protoc -I ${PROTOC_INPUT} --python_out=${PROTOCOL_OUT_PY} --pyi_out=${PROTOCOL_OUT_PYI} --grpc_python_out=${PROTOCOL_OUT_PY} ${GENERATE_FILE}
 
 .PHONY: operate
 operate:
