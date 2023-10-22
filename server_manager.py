@@ -9,9 +9,8 @@ from sklearn.cluster import KMeans
 from multiprocessing import Process
 from sklearn.metrics import mean_absolute_error
 from multiprocessing.managers import BaseManager
-from lib.feature.linearExpressions import LinearFe
 from sklearn.model_selection import train_test_split
-from controller.fileEventsControl import control as fileControl
+from controller.generalEventControl import control as generalControl
 from controller.svmEventsControl import control as svmControl
 from controller.lineEventsControl import control as lineControl
 from controller.neighborsEventsControl import control as neighborsControl
@@ -57,6 +56,8 @@ class ServerManager(BaseManager):
                 key = None
             )-> None:
 
+            generalControl(server, self)
+
             control_functions = {
                 'MULTI': self.multiProcessStart,
                 'LINE': lineControl,
@@ -70,6 +71,8 @@ class ServerManager(BaseManager):
                 control_func(server, self)
             else:
                 self.shutdown()
+    
+
 
     def shutdown(self) -> None:
         # terminate all processes
@@ -81,26 +84,16 @@ class ServerManager(BaseManager):
     
     def getDataSet(self) -> (pd.DataFrame or None):
         return self.__df if self.__df is not None else None
-    
-    def generateTrainData(
-            self,
-            dataSet,
-            x_dataDrop_key,
-            y_dataDrop_key, 
-            size, 
-            random,
-            key
-        ) -> dict:
-
-        x_train, x_test, y_train, y_test = train_test_split(
-            dataSet.drop(x_dataDrop_key, axis=1), 
-            dataSet[y_dataDrop_key], 
-            test_size=size, 
-            random_state=random
-        )
-
+        
+    def chooseDictData(
+        self,
+        key,
+        x_train,
+        y_train,
+        x_test,
+        y_test
+    )-> dict:
         preditionData = {}
-
         if key == 'train':
             preditionData['x'] = x_train
             preditionData['y'] = y_train
@@ -109,6 +102,22 @@ class ServerManager(BaseManager):
             preditionData['y'] = y_test
 
         return preditionData
+    
+    def generateTrainData(
+            self,
+            dataSet,
+            x_dataDrop_key,
+            y_dataDrop_key, 
+            size, 
+            random
+        ) -> list:
+
+        return train_test_split(
+            dataSet.drop(x_dataDrop_key, axis=1), 
+            dataSet[y_dataDrop_key], 
+            test_size=size, 
+            random_state=random
+        )
     
     def showhead(self)->pd.DataFrame:
         return self.__df.head()
@@ -119,18 +128,15 @@ class ServerManager(BaseManager):
     def showDescrible(self)->pd.DataFrame:
         return self.__df.describe()
     
-    def showMeanAbsoluteError(self, test, pred)->( float or np.ndarray ):
-        return mean_absolute_error(test, pred)
-    
-    def showScore(self, x, y, **kwargs)->float:
+    def showMeanAbsoluteError(self, test, pred, **kwargs)->( float or np.ndarray ):
 
-        model = LinearFe(x, y, **kwargs)
+        return mean_absolute_error(test, pred, **kwargs)
+    
+    def showScore(self, x, y, model)->float:
 
         return model.score(x, y)
     
-    def showPredict(self, x, y, pred, **kwargs)->np.ndarray:
-
-        model = LinearFe(x, y, **kwargs)
+    def showPredict(self, model, pred)->np.ndarray:
 
         return model.predict(pred)
         
