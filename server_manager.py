@@ -1,3 +1,4 @@
+import contextlib
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -17,9 +18,9 @@ from controller.polynomialEventControl import control as polynomialControl
 
 class ServerManager(BaseManager):
 
-    def __init__(self)-> None:
+    def __init__(self, file_path: str)-> None:
         self.processes = []
-        self.df = pd.read_csv('dataSet/kc_house_data.csv')
+        self.df = pd.read_csv(file_path)
 
     #################################################################################################
     ########### need to think about how to pass the score to customer after fit finished#############
@@ -31,13 +32,16 @@ class ServerManager(BaseManager):
         )-> None:
     
         control_functions = [lineControl, neighborsControl, polynomialControl, svmControl]
-        for control_func in control_functions:
-            self.processes.append(
-                Process(
-                    target=control_func,
-                    args=(server, self)
+        with contextlib.ExitStack() as stack:
+            for control_func in control_functions:
+                self.processes.append(
+                    Process(
+                        target=control_func,
+                        args=(server, self)
+                    )
                 )
-            )
+            stack.enter_context(process)
+            self.processes.append(process)
 
         # Start all processes
         for process in self.processes: process.start()
@@ -52,13 +56,19 @@ class ServerManager(BaseManager):
                 key = None
             )-> None:
 
+            control_functions = {
+                'MULTI': self.multiProcessStart,
+                'LINE': lineControl,
+                'NEIGHBORS': neighborsControl,
+                'POLYNOMIAL': polynomialControl,
+                'SVM': svmControl
+            }
 
-            if key == 'MULTI': self.multiProcessStart(server)
-            elif key == 'LINE':lineControl(server, self)
-            elif key == 'NEIGHBORS':neighborsControl(server, self)
-            elif key == 'POLYNOMIAL':polynomialControl(server, self)
-            elif key == 'SVM':svmControl(server, svmControl)
-            else: self.shutdown()
+            if key in control_functions:
+                control_func = control_functions[key]
+                control_func(server, self)
+            else:
+                self.shutdown()
 
     def shutdown(self) -> None:
         # terminate all processes
@@ -71,7 +81,7 @@ class ServerManager(BaseManager):
     def getDataSet(self) -> pd.DataFrame:
         return self.df
     
-    def gerateTrainData(
+    def generateTrainData(
             self,
             dataSet,
             x_dataDrop_key,
@@ -131,27 +141,27 @@ class ServerManager(BaseManager):
 
     def showFigure(self, key, dict)->None:
 
-        dataSet = self.df.copy()
-        dataSet.isna().sum()
-        dataSet['year'] = dataSet['date'].str.slice(0, 4) 
-        dataSet['month'] = dataSet['date'].str.slice(4, 6) 
-        dataSet['day'] = dataSet['date'].str.slice(6, 8) 
-        dataSet = dataSet.drop('date', axis=1)
-        dataSet = dataSet.drop('id', axis=1)
-        dataSet.head(3)
+        dataSetCopy = self.df.copy()
+        dataSetCopy.isna().sum()
+        dataSetCopy['year'] = dataSetCopy['date'].str.slice(0, 4) 
+        dataSetCopy['month'] = dataSetCopy['date'].str.slice(4, 6) 
+        dataSetCopy['day'] = dataSetCopy['date'].str.slice(6, 8) 
+        dataSetCopy = dataSetCopy.drop('date', axis=1)
+        dataSetCopy = dataSetCopy.drop('id', axis=1)
+        dataSetCopy.head(3)
         figureData = dict[key]
 
         if figureData == None:
             return None
-        
+
         return px.histogram(
-            dataSet, 
+            dataSetCopy, 
             x=key, 
             title=figureData["title"], 
             labels=figureData["labels"]
         )
 
-    def kmeansCalcuate(
+    def kmeansCalculate(
             self,
             trainArray,
             max_iter = 300,

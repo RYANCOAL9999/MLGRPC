@@ -15,22 +15,28 @@ async def server_graceful_shutdown(server) -> None:
     await server.stop(5)
 
 async def serve() -> None:
+    """
+    Serves the gRPC server.
+    """
 
-    server_manager = ServerManager()
+    server_manager = ServerManager('dataSet/kc_house_data.csv')
 
-    gRPCKey = str(os.getenv('GRPCKEY'))
+    gRPCKey = str(os.environ['GRPCKEY'])
 
-    port = int(os.getenv('PORT'))
+    port = int(os.environ['PORT'])
 
     address = "[::]:"
 
-    server = grpc.aio.server()
+    server = grpc.server()
 
-    server_manager.start(server, gRPCKey)
+    await server_manager.start(server, gRPCKey)
 
     listen_addr = address + port
 
-    server.add_insecure_port(listen_addr)
+    # grpc.ssl_server_credentials(...) if os.environ['SSL'] else None
+    server_credentials = None # grpc.ssl_server_credentials(...) 
+
+    server.add_secure_port(listen_addr, server_credentials)  # Use secure port instead of insecure port
 
     logging.info("Starting server on %s", listen_addr)
 
