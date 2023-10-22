@@ -1,6 +1,6 @@
 from server_manager import ServerManager
 
-from lib.feature.NearestNeighbors import (
+from lib.feature.nearestNeighbors import (
     NearestNeighborsFe,
     KDTreeFe,
     NearestCentroidFe

@@ -1,5 +1,5 @@
 from server_manager import ServerManager
-from lib.feature.PolynomialFeatures import (
+from lib.feature.polynomialFeatures import (
     PolynomialFe,
     PolynomialTransformFe
 )

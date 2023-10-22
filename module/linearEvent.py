@@ -1,7 +1,7 @@
 # import statsmodels.api as sm
 
 from server_manager import ServerManager
-from lib.feature.LinearExpression import (
+from lib.feature.linearExpression import (
     BayesianRidgeFe,
     ElasticNetFe,
     LassoFe,

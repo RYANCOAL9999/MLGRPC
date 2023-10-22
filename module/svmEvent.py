@@ -1,5 +1,5 @@
 from server_manager import ServerManager
-from lib.feature.SVMExpression import (
+from lib.feature.svmExpression import (
     LinearSVCFe,
     LinearSVRFe,
     SVCFe
