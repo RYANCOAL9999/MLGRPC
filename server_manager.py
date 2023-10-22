@@ -5,6 +5,7 @@ import seaborn as sns
 import plotly.express as px
 import matplotlib.pyplot as plt
 
+from grpc import server
 from sklearn.cluster import KMeans
 from multiprocessing import Process
 from lib.readfile import get_pd_async
@@ -20,9 +21,14 @@ from controller.polynomialEventsControl import control as polynomialControl
 
 class ServerManager(BaseManager):
 
-    def __init__(self)-> None:
+    def __init__(self, file_path: str)-> None:
+        self.__processes = []
+        self.__df = pd.read_csv(file_path)
+
+    def __init__(self, server: server)-> None:
         self.__processes = []
         self.__df = None
+        fileControl(server, self)
 
     def reversed(self)->bool:
         return self.__df is None
@@ -33,10 +39,6 @@ class ServerManager(BaseManager):
         if self.reversed():
             correct = False
         return correct
-    
-    def __init__(self, file_path: str)-> None:
-        self.__processes = []
-        self.__df = pd.read_csv(file_path)
 
     #################################################################################################
     ########### need to think about how to pass the score to customer after fit finished#############

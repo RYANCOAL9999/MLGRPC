@@ -19,8 +19,6 @@ async def serve() -> None:
     Serves the gRPC server.
     """
 
-    server_manager = ServerManager()
-
     gRPCKey = str(os.environ['GRPCKEY'])
 
     port = int(os.environ['PORT'])
@@ -28,6 +26,8 @@ async def serve() -> None:
     address = "[::]:"
 
     server = grpc.server()
+
+    server_manager = ServerManager(server)
 
     await server_manager.start(server, gRPCKey)
 
