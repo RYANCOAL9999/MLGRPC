@@ -1,7 +1,7 @@
 # import statsmodels.api as sm
 
 from server_manager import ServerManager
-from lib.feature.linearExpression import (
+from lib.feature.linearExpressions import (
     BayesianRidgeFe,
     ElasticNetFe,
     LassoFe,
@@ -34,7 +34,7 @@ from lib.proto.py.linear_expression_pb2 import (
     ElasticNetRequest
 )
 
-class LinearEvent(LinearService):
+class LinearEvents(LinearService):
 
     def __init__(
             self, 
