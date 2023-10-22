@@ -9,12 +9,13 @@ from sklearn.cluster import KMeans
 from multiprocessing import Process
 from sklearn.metrics import mean_absolute_error
 from multiprocessing.managers import BaseManager
-from lib.feature.LinearExpression import LinearFe
+from lib.feature.linearExpressions import LinearFe
 from sklearn.model_selection import train_test_split
-from controller.svmEventControl import control as svmControl
-from controller.lineEventControl import control as lineControl
+from controller.fileEventsControl import control as fileControl
+from controller.svmEventsControl import control as svmControl
+from controller.lineEventsControl import control as lineControl
 from controller.neighborsEventsControl import control as neighborsControl
-from controller.polynomialEventControl import control as polynomialControl
+from controller.polynomialEventsControl import control as polynomialControl
 
 class ServerManager(BaseManager):
 
