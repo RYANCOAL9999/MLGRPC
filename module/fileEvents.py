@@ -2,8 +2,9 @@ from server_manager import ServerManager
 
 from lib.proto.py.file_handler_pb2 import (
     FileService,
+    FileEventReply,
     FileUploadRequest,
-    FileUploadReply
+    FileDeleteRequest
 )
 
 class FileEvents(FileService):
@@ -18,13 +19,32 @@ class FileEvents(FileService):
             self, 
             request, 
             context
-        ) -> FileUploadReply:
+        ) -> FileEventReply:
 
         if not isinstance(request, FileUploadRequest):
             raise ValueError("Invalid request. Expected LinearRegressionRequest.")
         
         request = FileUploadRequest(request)
 
-        access = self.manager.accessDF(request.url)
+        result = self.manager.accessDF(request.url)
 
-        return FileUploadReply(access)
+        return FileEventReply(
+            access = result
+        )
+    
+    def fileDeleteTrigger(
+            self,
+            request, 
+            context
+        ) -> FileEventReply:
+
+        # if not isinstance(request, FileDeleteRequest):
+            # raise ValueError("Invalid request. Expected LinearRegressionRequest.")
+        
+        request = FileDeleteRequest(request)
+
+        result = self.manager.deleteDF(request.fileName)
+
+        return FileEventReply(
+            access = result
+        )

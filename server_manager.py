@@ -39,6 +39,10 @@ class ServerManager(BaseManager):
         if self.reversed():
             correct = False
         return correct
+    
+    def deleteDF(self, fileName: str) -> None:
+        self.__df = []
+        return True
 
     #################################################################################################
     ########### need to think about how to pass the score to customer after fit finished#############
