@@ -1,10 +1,6 @@
-
-
-from lib.proto.py.general_expression_pb2 import (
-    GeneralService,
-    DataFrame
-)
 from server_manager import ServerManager
+from lib.proto.py.general_expression_pb2 import DataFrame
+from lib.proto.py.general_expression_pb2_grpc import GeneralService
 
 class GeneralEvents(GeneralService):
 
