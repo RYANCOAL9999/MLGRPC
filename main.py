@@ -25,7 +25,7 @@ async def serve() -> None:
 
     address = "[::]:"
 
-    server = grpc.server()
+    server = grpc.aio.server()
 
     server_manager = ServerManager(server)
 

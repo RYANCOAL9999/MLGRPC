@@ -41,7 +41,7 @@ class ServerManager(BaseManager):
         return correct
     
     def deleteDF(self, fileName: str) -> None:
-        self.__df = []
+        self.__df = None
         return True
 
     #################################################################################################
