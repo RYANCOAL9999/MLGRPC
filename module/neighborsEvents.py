@@ -6,7 +6,6 @@ from lib.feature.nearestNeighbors import (
 )
 from lib.proto.py.nearest_neighbors_pb2_grpc import NeighborsService
 from lib.proto.py.nearest_neighbors_pb2 import (
-    NeighborsService,
     NearestNeighborsReply,
     NearestNeighborsRequest,
     KDTreeReply,
