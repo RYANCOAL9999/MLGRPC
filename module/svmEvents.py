@@ -1,8 +1,8 @@
 from server_manager import ServerManager
 from lib.feature.svmExpressions import (
-    LinearSVCFe,
-    LinearSVRFe,
-    SVCFe
+    linearSVCFe,
+    linearSVRFe,
+    svcFe
 )
 
 from lib.proto.py.svm_expression_pb2 import (
@@ -23,7 +23,7 @@ class SVMEvents(SVMService):
         )->None:
         self.manager = serverManager
 
-    def LinearSVCTrigger(
+    def LinearSVCEvent(
             self, 
             request, 
             context
@@ -55,7 +55,7 @@ class SVMEvents(SVMService):
             y_test
         )
 
-        model = LinearSVCFe(
+        model = linearSVCFe(
             x,
             y,
             **request.kwargs
@@ -72,7 +72,7 @@ class SVMEvents(SVMService):
 
         return response
     
-    def LinearSVRTrigger(
+    def LinearSVREvent(
             self, 
             request, 
             context
@@ -104,7 +104,7 @@ class SVMEvents(SVMService):
             y_test
         )
 
-        model = LinearSVRFe(
+        model = linearSVRFe(
             x,
             y,
             **request.kwargs
@@ -120,7 +120,7 @@ class SVMEvents(SVMService):
 
         return response
     
-    def SVCTrigger(
+    def SVCEvent(
             self, 
             request, 
             context
@@ -152,7 +152,7 @@ class SVMEvents(SVMService):
             y_test
         )
 
-        model = SVCFe(
+        model = svcFe(
             x,
             y,
             **request.kwargs

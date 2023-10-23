@@ -2,15 +2,15 @@
 
 from server_manager import ServerManager
 from lib.feature.linearExpressions import (
-    BayesianRidgeFe,
-    ElasticNetFe,
-    LassoFe,
-    LassoLarsFe,
-    LinearFe, 
-    RidgeFe, 
-    RidgeCVFe,
-    SGDClassifierFe,
-    TweedieRegressorFe
+    bayesianRidgeFe,
+    elasticNetFe,
+    lassoFe,
+    lassoLarsFe,
+    linearFe, 
+    ridgeFe, 
+    ridgeCVFe,
+    sgdClassifierFe,
+    tweedieRegressorFe
 )
 from lib.proto.py.linear_expression_pb2 import (
     LinearService,
@@ -42,7 +42,7 @@ class LinearEvents(LinearService):
         )->None:
         self.manager = serverManager
     
-    def LinearRegressionTrigger(
+    def LinearRegressionEvent(
             self, 
             request, 
             context
@@ -78,7 +78,7 @@ class LinearEvents(LinearService):
         
         # ols_m.summary()
 
-        model = LinearFe(
+        model = linearFe(
             x,
             y,
             request.sample_weight,
@@ -105,7 +105,7 @@ class LinearEvents(LinearService):
 
         return response
     
-    def LinearRidgeTrigger(
+    def LinearRidgeEvent(
             self, 
             request, 
             context
@@ -137,7 +137,7 @@ class LinearEvents(LinearService):
             y_test
         )
 
-        model = RidgeFe(
+        model = ridgeFe(
             x,
             y,
             request.alpha,
@@ -155,7 +155,7 @@ class LinearEvents(LinearService):
 
         return response
     
-    def LinearRidgeCVTrigger(
+    def LinearRidgeCVEvent(
             self, 
             request, 
             context
@@ -187,7 +187,7 @@ class LinearEvents(LinearService):
             y_test
         )
 
-        model = RidgeCVFe(
+        model = ridgeCVFe(
             x,
             y,
             request.alpha,
@@ -208,7 +208,7 @@ class LinearEvents(LinearService):
         return response
 
     
-    def LassoExpressionTrigger(
+    def LassoExpressionEvent(
             self, 
             request, 
             context 
@@ -240,7 +240,7 @@ class LinearEvents(LinearService):
             y_test
         )
 
-        model = LassoFe(
+        model = lassoFe(
             x,
             y,
             request.alpha,
@@ -260,7 +260,7 @@ class LinearEvents(LinearService):
         
         return response
     
-    def LassoLarsLassoExpressionTrigger(
+    def LassoLarsLassoExpressionEvent(
             self, 
             request, 
             context   
@@ -292,7 +292,7 @@ class LinearEvents(LinearService):
             y_test
         )
 
-        model = LassoLarsFe(
+        model = lassoLarsFe(
             x,
             y,
             request.alpha,
@@ -312,7 +312,7 @@ class LinearEvents(LinearService):
 
         return response
 
-    def BayesianRidgeTrigger(
+    def BayesianRidgeEvent(
             self, 
             request, 
             context 
@@ -343,7 +343,8 @@ class LinearEvents(LinearService):
             x_test, 
             y_test
         )
-        model = BayesianRidgeFe(
+
+        model = bayesianRidgeFe(
             x,
             y,
             request.sample_weight,
@@ -366,7 +367,7 @@ class LinearEvents(LinearService):
 
         return response
 
-    def TweedieRegressorTrigger(
+    def TweedieRegressorEvent(
             self, 
             request, 
             context 
@@ -398,7 +399,7 @@ class LinearEvents(LinearService):
             y_test
         )
 
-        model = TweedieRegressorFe(
+        model = tweedieRegressorFe(
             x,
             y,
             request.sample_weight,
@@ -415,7 +416,7 @@ class LinearEvents(LinearService):
 
         return response
 
-    def SGDClassifierTrigger(
+    def SGDClassifierEvent(
             self, 
             request, 
             context 
@@ -447,7 +448,7 @@ class LinearEvents(LinearService):
             y_test
         )
 
-        model = SGDClassifierFe(
+        model = sgdClassifierFe(
             x,
             y,
             request.sample_weight,
@@ -466,7 +467,7 @@ class LinearEvents(LinearService):
 
         return response
     
-    def ElasticNetTrigger (
+    def ElasticNetEvent (
             self, 
             request, 
             context 
@@ -498,7 +499,7 @@ class LinearEvents(LinearService):
             y_test
         )
 
-        model = ElasticNetFe(
+        model = elasticNetFe(
             x,
             y,
             request.alpha,

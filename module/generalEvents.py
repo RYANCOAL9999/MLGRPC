@@ -14,7 +14,7 @@ class GeneralEvents(GeneralService):
         )->None:
         self.manager = serverManager
 
-    def HeaderEventTriggered(
+    def HeaderEvent(
             self, 
             context
         )->DataFrame:
@@ -29,7 +29,7 @@ class GeneralEvents(GeneralService):
 
         return response
     
-    def InfoEventTriggered(
+    def InfoEvent(
             self, 
             context
         )->DataFrame:
@@ -44,7 +44,7 @@ class GeneralEvents(GeneralService):
         
         return response
     
-    def DescribeEventTriggered(
+    def DescriblerEvent(
             self, 
             context
         )->DataFrame:
