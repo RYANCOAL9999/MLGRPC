@@ -15,7 +15,7 @@ class FileEvents(FileService):
         )->None:
         self.manager = serverManager
 
-    def fileUploadTrigger(
+    def FileUploadEvent(
             self, 
             request, 
             context
@@ -32,7 +32,7 @@ class FileEvents(FileService):
             access = result
         )
     
-    def fileDeleteTrigger(
+    def FileDeleteEvent(
             self,
             request, 
             context
