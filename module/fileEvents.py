@@ -1,7 +1,6 @@
 from server_manager import ServerManager
-
+from lib.proto.py.file_handler_pb2_grpc import FileService
 from lib.proto.py.file_handler_pb2 import (
-    FileService,
     FileEventReply,
     FileUploadRequest,
     FileDeleteRequest
