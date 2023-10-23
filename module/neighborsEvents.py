@@ -1,9 +1,9 @@
 from server_manager import ServerManager
 
 from lib.feature.nearestNeighbors import (
-    NearestNeighborsFe,
-    KDTreeFe,
-    NearestCentroidFe
+    nearestNeighborsFe,
+    kdTreeFe,
+    nearestCentroidFe
 )
 
 from lib.proto.py.nearest_neighbors_pb2 import (
@@ -24,7 +24,7 @@ class NeighborsEvents(NeighborsService):
         )->None:
         self.manager = serverManager
 
-    def NearestNeighborsTrigger(
+    def NearestNeighborsEvent(
             self, 
             request, 
             context
@@ -56,7 +56,7 @@ class NeighborsEvents(NeighborsService):
             y_test
         )
 
-        model = NearestNeighborsFe(
+        model = nearestNeighborsFe(
             x,
             y if not y else None,
             **request.kwargs
@@ -72,7 +72,7 @@ class NeighborsEvents(NeighborsService):
 
         return response
     
-    def KDTreeTrigger(
+    def KDTreeEvent(
             self,
             request, 
             context
@@ -104,7 +104,7 @@ class NeighborsEvents(NeighborsService):
             y_test
         )
 
-        model = KDTreeFe(
+        model = kdTreeFe(
             x,
             request.k,
             request.leaf_size,
@@ -123,7 +123,7 @@ class NeighborsEvents(NeighborsService):
 
         return response
     
-    def NearestCentroidTrigger(
+    def NearestCentroidEvent(
             self,
             request, 
             context  
@@ -155,7 +155,7 @@ class NeighborsEvents(NeighborsService):
             y_test
         )
 
-        model = NearestCentroidFe(
+        model = nearestCentroidFe(
             x,
             y,
             request.metric,

@@ -1,7 +1,7 @@
 from server_manager import ServerManager
 from lib.feature.polynomialFeatures import (
-    PolynomialFe,
-    PolynomialTransformFe
+    polynomialFe,
+    polynomialTransformFe
 )
 from lib.proto.py.polynomial_features_pb2 import (
     PolynomialService,
@@ -19,7 +19,7 @@ class PolynomialEvents(PolynomialService):
         )->None:
         self.manager = serverManager
 
-    def PolynomialFeaturesTrigger(
+    def PolynomialFeaturesEvent(
             self, 
             request,
             context
@@ -45,7 +45,7 @@ class PolynomialEvents(PolynomialService):
 
         x, y = self.manager.chooseDictData(request.key, x_train, y_train, x_test, y_test)
 
-        model = PolynomialFe(
+        model = polynomialFe(
             x,
             y if not y else None,
             request.degree,
@@ -61,7 +61,7 @@ class PolynomialEvents(PolynomialService):
 
         return response
     
-    def PolynomialFeaturesFitTransformTrigger(
+    def PolynomialFeaturesFitTransformEvent(
             self, 
             request,
             context
@@ -87,7 +87,7 @@ class PolynomialEvents(PolynomialService):
 
         x, y = self.manager.chooseDictData(request.key, x_train, y_train, x_test, y_test)
 
-        model = PolynomialTransformFe(
+        model = polynomialTransformFe(
             x,
             y if not y else None,
             request.sample_weight,
