@@ -3,8 +3,8 @@ from lib.feature.polynomialFeatures import (
     polynomialFe,
     polynomialTransformFe
 )
+from lib.proto.py.polynomial_features_pb2_grpc import PolynomialService
 from lib.proto.py.polynomial_features_pb2 import (
-    PolynomialService,
     PolynomialFeaturesReply,
     PolynomialFeaturesRequest,
     PolynomialFeaturesFitTransformReply,

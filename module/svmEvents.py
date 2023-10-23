@@ -4,9 +4,8 @@ from lib.feature.svmExpressions import (
     linearSVRFe,
     svcFe
 )
-
+from lib.proto.py.svm_expression_pb2_grpc import SVMService
 from lib.proto.py.svm_expression_pb2 import (
-    SVMService,
     LinearSVCReply,
     LinearSVCRequest,
     LinearSVRReply,

@@ -1,5 +1,4 @@
 # import statsmodels.api as sm
-
 from server_manager import ServerManager
 from lib.feature.linearExpressions import (
     bayesianRidgeFe,
@@ -12,8 +11,8 @@ from lib.feature.linearExpressions import (
     sgdClassifierFe,
     tweedieRegressorFe
 )
+from lib.proto.py.linear_expression_pb2_grpc import LinearService
 from lib.proto.py.linear_expression_pb2 import (
-    LinearService,
     LinearRegressionReply,
     LinearRegressionRequest,
     LinearRidgeReply,

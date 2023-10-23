@@ -1,11 +1,10 @@
 from server_manager import ServerManager
-
 from lib.feature.nearestNeighbors import (
     nearestNeighborsFe,
     kdTreeFe,
     nearestCentroidFe
 )
-
+from lib.proto.py.nearest_neighbors_pb2_grpc import NeighborsService
 from lib.proto.py.nearest_neighbors_pb2 import (
     NeighborsService,
     NearestNeighborsReply,
