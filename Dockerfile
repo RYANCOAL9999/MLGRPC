@@ -13,7 +13,7 @@ RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
 # Define an environment variable
 # You can set the PORT variable as needed for your script
-ENV PORT=50050
+ENV PORT=50051
 
 # Define The GRC Controller to start with server
 # It has [MULTI, LINE, NEIGHBORS, POLYNOMIAL, SVM]
