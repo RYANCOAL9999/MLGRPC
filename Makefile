@@ -14,7 +14,7 @@ help:
 # Define the image name and tag
 IMAGE_NAME = ML-grpc-service
 IMAGE_TAG = latest
-PROTOC_INPUT = ./lib/proto
+PROTOC_INPUT = ../../AIProto
 PROTOCOL_OUT_PY = ./lib/proto/py
 PROTOCOL_OUT_PYI = ./lib/proto/pyi
 GENERATE_FILE = ./lib/proto/general_expression.proto ./lib/proto/linear_expression.proto ./lib/proto/nearest_neighbors.proto ./lib/proto/polynomial_features.proto ./lib/proto/svm_expression.proto
