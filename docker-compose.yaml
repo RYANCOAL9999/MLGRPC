@@ -7,9 +7,9 @@ services:
       context: .
       dockerfile: Dockerfile  # Path to your Dockerfile
     ports:
-      - "50051:50051"
+      - "50050:50050"
     environment:
-      - PORT=50051  # Set the PORT environment variable
+      - PORT=50050  # Set the PORT environment variable
       - GRPCKEY=MULTI # Set the GRPC KEY environment variable
     networks:
       - RYANCOAL-network # Optionally, you can define a custom network
