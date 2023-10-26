@@ -17,7 +17,7 @@ IMAGE_TAG = latest
 PROTOC_INPUT = ../../AIProto
 PROTOCOL_OUT_PY = ./lib/proto/py
 PROTOCOL_OUT_PYI = ./lib/proto/pyi
-GENERATE_FILE = ./lib/proto/general_expression.proto ./lib/proto/file_handler.proto ./lib/proto/linear_expression.proto ./lib/proto/nearest_neighbors.proto ./lib/proto/polynomial_features.proto ./lib/proto/svm_expression.proto
+GENERATE_FILE = ../../AIProto/general_expression.proto ../../AIProto/lib/np_library.proto ../../AIProto/lib/enum_expression.proto ../../AIProto/file_handler.proto ../../AIProto/linear_expression.proto ../../AIProto/nearest_neighbors.proto ../../AIProto/polynomial_features.proto ../../AIProto/svm_expression.proto
 
 
 
