@@ -19,9 +19,6 @@ PROTOCOL_OUT_PY = ./lib/proto/py
 PROTOCOL_OUT_PYI = ./lib/proto/pyi
 GENERATE_FILE = ../../AIProto/general_expression.proto ../../AIProto/lib/np_library.proto ../../AIProto/lib/enum_expression.proto ../../AIProto/linear_expression.proto ../../AIProto/nearest_neighbors.proto ../../AIProto/polynomial_features.proto ../../AIProto/svm_expression.proto
 
-
-
-
 .PHONY: virtualenv
 virtualenv:
 	virtualenv venv -p python3
